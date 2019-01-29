@@ -83,7 +83,7 @@ xmove([A,B,C,D,E,b,G,H,I], 6, [A,B,C,D,E,x,G,H,I]).
 xmove([A,B,C,D,E,F,b,H,I], 7, [A,B,C,D,E,F,x,H,I]).
 xmove([A,B,C,D,E,F,G,b,I], 8, [A,B,C,D,E,F,G,x,I]).
 xmove([A,B,C,D,E,F,G,H,b], 9, [A,B,C,D,E,F,G,H,x]).
-xmove(Board, N, Board) :- write('Illegal move.'), nl.
+xmove(Board, _, Board) :- write('Illegal move.'), nl.
 
 % The 0-place predicate playo starts a game with the user.
 
