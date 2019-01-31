@@ -637,7 +637,7 @@ create_board(N,Board):-
 
 % random_number(X,Lim) gets a limit Lim and gives a random
 % number X which is from 1 to Lim-1
-random_number(X,Lim):-X is integer(random*(Lim-1))+1.
+random_number(X,Lim):-X is integer(random(1)*(Lim-1))+1.
 
 % writeln(X) outputs X and then does nl.
 writeln(X):-write(X),nl.
