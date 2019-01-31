@@ -74,7 +74,7 @@ game_start:-board_sign(h,o),game(Board),think(Board),!. % Computer starts, Cut p
 % first check the move is legal (Column not full)
 go(X):-  game(Pos),
 	 not(get_y(X,Y)),	% continue if column is full, else fail
-	 say(Pos, $Move Illegal! You cant move to the specified column. Choose again...$, yes).
+	 say(Pos, 'Move Illegal! You cant move to the specified column. Choose again...', yes).
 
 go(X):-  get_y(X,Y),			% Get Y value for X
 	 game(Current_Pos),		% Get current board position
@@ -98,7 +98,7 @@ go(X):-  get_y(X,Y),			% Get Y value for X
 % previous, already played, turns.
 think(Pos) :-
   	player_human(H), victory(H, Pos), !,
-  	say(Pos, $Unbelievable! You are the winner.$, no).
+  	say(Pos, 'Unbelievable! You are the winner.', no).
 think(Pos) :-
   	try_to_win(Pos), !.
 think(Pos) :-
@@ -108,16 +108,16 @@ think(_)   :-
   	last_good_move(Pos2), !, % prevents backtracking that will cause the 
 				 % computer to change a move he had
 				 % already done and look for a new one.
-  	say(Pos2, $It's your move.$, yes).
+  	say(Pos2, 'Its your move.', yes).
 think(Pos) :-
   	player_ai(AI), player_human(H),
 	move(AI, Pos, Pos2),
   	nolose(H, Pos2, 0), !, % Tries to advance toward winning
-  	say(Pos2, $Go on, you have some chance in this game.$, yes).
+  	say(Pos2, 'Go on, you have some chance in this game.', yes).
 think(Pos) :-
   	player_ai(AI),
   	move(AI, Pos, Pos2),
-  	say(Pos2, $Go on, you have some chance in this game.$, yes).
+  	say(Pos2, 'Go on, you have some chance in this game.', yes).
 
 try_nolose(Pos) :- player_ai(AI), 
 		   move(AI, Pos, Pos2),
@@ -135,13 +135,13 @@ try_to_win(Pos) :- player_ai(AI),
 is_it_win(Pos2) :-
   player_ai(AI),
   victory(AI, Pos2),
-  say(Pos2, $Sorry, you cannot win against the AI.$, no).
+  say(Pos2, 'Sorry, you cannot win against the AI.', no).
 
 is_it_win(Pos2) :-
   win_deep(Deep),
   player_human(H),
   win(H, Pos2, Deep),
-  say(Pos2, $Give up. Don't lose my time.$, yes).
+  say(Pos2, 'Give up. Dont lose my time.', yes).
 
 
 % AI scanning rules
@@ -406,7 +406,7 @@ write_help:-
 	writeln('player can slide his sign. Each player, at his turn, puts his sign on'),
 	writeln('one of the columns at it "slides" down the colums to the lowest place possible.'),
 	writeln('In order to win the game a play must have 4 signs placed together horizonally,'),
-	writeln('vertically, or slash shape (/ or \).'),
+	writeln('vertically, or a diagonal.'),
 	writeln(''),
 	writeln('GAME CONTROL:'),
 	writeln('At the beginning of the game you will be ask to enter the board size.'),
@@ -561,9 +561,9 @@ whitespace --> whsp.
 
 whsp --> [X], {X<48}.
 lastword(10).   % end if new line entered
-lastword(`.).
-lastword(`!).
-lastword(`?).
+lastword(`.`).
+lastword(`!`).
+lastword(`?`).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section 4 : Program Setup rules
@@ -573,9 +573,9 @@ lastword(`?).
 read_int(X):-read(X),integer(X),!. % Cut used to stop when an integer is read
 read_int(X):-writeln('Error'),read_int(X).
 
-% read a y\n input
-yesno(`y).
-yesno(`n).
+% Read a yn input
+yesno(`y`).
+yesno(`n`).
 read_yn(X):-get(X), yesno(X),!.   % Cut is used to stop when a yesno(X) char 
 				  % is read
 read_yn(X):-writeln('Error'), read_yn(X).
@@ -597,11 +597,11 @@ setup:-	retractall(board_sign(_,_)),
 	set_players(Chr).
 
 % set_players set the players signs according to who opens the game.
-set_players(`y):- % Human opens - X
+set_players(`y`):- % Human opens - X
 		assert(board_sign(h,x)),
 		assert(board_sign(c,o)),
 		assert(board_sign(f,f)),!.
-set_players(`n):- % Computer opens - X
+set_players(`n`):- % Computer opens - X
 		assert(board_sign(h,o)),
 		assert(board_sign(c,x)),
 		assert(board_sign(f,f)),!.
